@@ -59,26 +59,47 @@ section{padding:64px 22px}
 }
 @keyframes sobreFadeIn{to{opacity:1}}
 .sobre-btn{
-  position:absolute;bottom:18%;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:12%;left:50%;transform:translateX(-50%);
   z-index:3;
-  padding:16px 44px;border-radius:40px;
-  background:rgba(0,60,90,.45);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.3);
-  box-shadow:0 4px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.12);
-  font-family:'Cormorant Garamond',serif;
-  font-size:17px;font-weight:500;font-style:italic;
-  letter-spacing:3.5px;text-transform:uppercase;
-  color:rgba(255,255,255,.92);
-  text-shadow:0 1px 4px rgba(0,0,0,.35);
-  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  background:none;border:none;cursor:pointer;
   opacity:0;
   animation:sobreFadeIn 1s ease .8s forwards;
-  transition:background .3s, border-color .3s, transform .3s var(--spring), opacity .4s ease;
   touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
 }
-.sobre-btn:active{transform:translateX(-50%) scale(.95)}
-.sobre-btn:hover{background:rgba(0,60,90,.55);border-color:rgba(255,255,255,.45);}
+.sobre-ring{
+  position:relative;width:82px;height:82px;
+  display:flex;align-items:center;justify-content:center;
+}
+.sobre-ring::before,.sobre-ring::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(255,255,255,.3);
+  animation:ringExpand 2.8s ease-out infinite;
+}
+.sobre-ring::after{animation-delay:1.4s;}
+@keyframes ringExpand{
+  0%{transform:scale(.65);opacity:.85}
+  100%{transform:scale(1.65);opacity:0}
+}
+.sobre-circle{
+  width:68px;height:68px;border-radius:50%;
+  background:rgba(255,255,255,.13);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.38);
+  box-shadow:0 8px 32px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:2;
+  transition:transform .35s var(--spring),background .3s;
+}
+.sobre-btn:active .sobre-circle{transform:scale(.9);}
+.sobre-circle svg{width:30px;height:30px;}
+.sobre-lbl{
+  font-family:'Lato',sans-serif;
+  font-size:8.5px;letter-spacing:4.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.72);
+  text-shadow:0 1px 6px rgba(0,0,0,.45);
+}
 .sobre-video{
   position:absolute;inset:0;
   width:100%;height:100%;
@@ -95,20 +116,98 @@ section{padding:64px 22px}
   transition:width .08s linear;pointer-events:none;
 }
 
-/* ── MUSIC BTN ────────────────────────────────────────── */
-.music-btn{
-  position:fixed;bottom:24px;right:20px;z-index:900;
-  width:54px;height:54px;border-radius:50%;
-  background:transparent;border:none;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;padding:0;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-  filter:drop-shadow(0 4px 14px rgba(0,0,0,.45));
+/* ── MUSIC BTN (vinyl + tonearm) ─────────────────────── */
+.vinyl-btn{
+  position:fixed;bottom:20px;right:20px;z-index:900;
+  width:68px;height:68px;border-radius:50%;padding:0;
+  border:none;cursor:pointer;background:transparent;
+  opacity:0;transform:scale(.6);pointer-events:none;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .4s;
+  box-shadow:0 4px 18px rgba(0,0,0,.45);
 }
-.music-btn:active{transform:scale(.92)}
-.music-btn .vinyl{width:54px;height:54px;border-radius:50%;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-.music-btn.on .vinyl{animation:vinylSpin 2.4s linear infinite}
-@keyframes vinylSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.vinyl-btn.is-ready{opacity:1;transform:scale(1);pointer-events:auto}
+.vinyl-btn:hover{transform:scale(1.08)}
+.vinyl-spin{width:100%;height:100%;border-radius:50%;position:relative;}
+.vinyl-btn.is-playing .vinyl-spin{animation:vinylSpin 1.8s linear infinite}
+@keyframes vinylSpin{to{transform:rotate(360deg)}}
+.vinyl-disc{
+  width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;
+  background:
+    radial-gradient(circle,#001a26 4%,transparent 4.5%),
+    radial-gradient(circle,#7cc4da 0%,#008cb4 17%,#006a8a 19%,transparent 19.5%),
+    repeating-radial-gradient(circle,
+      transparent 20%,rgba(255,255,255,.055) 20.8%,transparent 21.5%,
+      transparent 24%,rgba(255,255,255,.04) 24.8%,transparent 25.5%,
+      transparent 28%,rgba(255,255,255,.055) 28.8%,transparent 29.5%,
+      transparent 32%,rgba(255,255,255,.04) 32.8%,transparent 33.5%,
+      transparent 36%,rgba(255,255,255,.055) 36.8%,transparent 37.5%,
+      transparent 40%,rgba(255,255,255,.04) 40.8%,transparent 41.5%,
+      transparent 44%,rgba(255,255,255,.055) 44.8%,transparent 45.5%,
+      transparent 48%,rgba(255,255,255,.04) 48.8%,transparent 49.5%,
+      transparent 52%,rgba(255,255,255,.055) 52.8%,transparent 53.5%,
+      transparent 56%,rgba(255,255,255,.04) 56.8%,transparent 57.5%,
+      transparent 60%,rgba(255,255,255,.055) 60.8%,transparent 61.5%,
+      transparent 64%,rgba(255,255,255,.04) 64.8%,transparent 65.5%,
+      transparent 68%,rgba(255,255,255,.055) 68.8%,transparent 69.5%,
+      transparent 72%,rgba(255,255,255,.04) 72.8%,transparent 73.5%,
+      transparent 76%,rgba(255,255,255,.055) 76.8%,transparent 77.5%,
+      transparent 80%,rgba(255,255,255,.04) 80.8%,transparent 81.5%,
+      transparent 84%,rgba(255,255,255,.055) 84.8%,transparent 85.5%,
+      transparent 88%,rgba(255,255,255,.04) 88.8%,transparent 89.5%,
+      transparent 92%,rgba(255,255,255,.055) 92.8%,transparent 93.5%,
+      transparent 96%,rgba(255,255,255,.04) 96.8%,transparent 97.5%
+    ),
+    radial-gradient(circle,#001a26 0%,#002030 60%,#001a26 100%);
+  box-shadow:inset 0 0 8px rgba(0,0,0,.4);
+}
+.vinyl-sheen{
+  position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,.09) 42%,rgba(255,255,255,.15) 48%,rgba(255,255,255,.09) 54%,transparent 66%);
+  pointer-events:none;
+}
+.vinyl-label-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Cormorant Garamond',serif;font-size:10px;color:#e3f4f9;
+  text-align:center;line-height:1.1;opacity:.8;pointer-events:none;width:26px;
+}
+.vinyl-label-text small{font-family:'Lato',sans-serif;font-size:4.5px;letter-spacing:.15em;display:block;margin-top:1px;opacity:.6}
+.vinyl-hole{
+  position:absolute;top:50%;left:50%;width:6px;height:6px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:#001a26;box-shadow:0 0 0 1.5px rgba(0,140,180,.45);
+}
+.vinyl-icons{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:18px;height:18px;pointer-events:none;z-index:2;
+}
+.vinyl-icons svg{width:100%;height:100%;display:block}
+.vinyl-icon-pause{display:none}
+.vinyl-btn.is-playing .vinyl-icon-play{display:none}
+.vinyl-btn.is-playing .vinyl-icon-pause{display:block}
+.vinyl-btn::after{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1px solid rgba(0,140,180,.55);opacity:.3;
+  animation:vinylPulse 3s ease-in-out infinite;
+}
+.vinyl-btn.is-playing::after{animation-duration:1.6s}
+@keyframes vinylPulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.12);opacity:.05}}
+.vinyl-tonearm{
+  position:absolute;top:-4px;right:-2px;width:24px;height:34px;
+  transform-origin:top right;transform:rotate(-28deg);
+  transition:transform .6s cubic-bezier(.2,.7,.2,1);pointer-events:none;z-index:1;
+}
+.vinyl-btn.is-playing .vinyl-tonearm{transform:rotate(-12deg)}
+.vinyl-tonearm-line{
+  position:absolute;top:2px;right:4px;width:2px;height:28px;
+  background:linear-gradient(to bottom,#006a8a,#008cb4 40%,#006a8a);
+  border-radius:1px;transform:rotate(-5deg);transform-origin:top center;
+}
+.vinyl-tonearm-head{position:absolute;bottom:0;right:2px;width:5px;height:6px;background:#008cb4;border-radius:0 0 2px 2px;}
+.vinyl-tonearm-pivot{
+  position:absolute;top:0;right:2px;width:7px;height:7px;
+  background:radial-gradient(circle,#7cc4da,#006a8a);border-radius:50%;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);
+}
 
 /* ── TOAST ────────────────────────────────────────────── */
 #toast{
@@ -210,44 +309,49 @@ section{padding:64px 22px}
 /* ── FECHA ────────────────────────────────────────────── */
 #fecha{
   position:relative;overflow:hidden;padding:0;min-height:85vh;
-  display:flex;align-items:center;
-  background:linear-gradient(145deg,#f5fafd 0%,#e3f4f9 50%,#cce8f4 100%);
+  display:flex;align-items:center;justify-content:flex-end;
+  background:#e3f4f9;
+}
+.fch-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;z-index:0;
+  filter:brightness(.82) saturate(.85);
 }
 #fecha::before,#fecha::after{content:'';position:absolute;left:0;right:0;z-index:3;pointer-events:none;}
 #fecha::before{top:0;height:90px;background:linear-gradient(to bottom,#fff 0%,transparent 100%);}
 #fecha::after{bottom:0;height:90px;background:linear-gradient(to top,#fff 0%,transparent 100%);}
 .fch-content{
-  position:relative;z-index:2;padding:72px 32px 64px;text-align:left;max-width:78%;
+  position:relative;z-index:2;padding:72px 22px 64px 16px;text-align:left;width:62%;
 }
 .fch-intro{
   font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;font-style:italic;
-  color:var(--cream);margin-bottom:18px;letter-spacing:.5px;opacity:.7;
+  color:#111;margin-bottom:18px;letter-spacing:.5px;opacity:.75;
 }
 .fch-n1{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(26px,7vw,36px);font-weight:700;
-  color:var(--cream);line-height:1.15;
-  letter-spacing:clamp(5px,1.8vw,11px);text-transform:uppercase;
+  font-size:clamp(22px,5.5vw,30px);font-weight:700;
+  color:#111;line-height:1.15;
+  letter-spacing:clamp(3px,1vw,6px);text-transform:uppercase;
 }
 .fch-full{
   font-family:'Lato',sans-serif;font-size:clamp(12px,3vw,14px);font-weight:700;
-  letter-spacing:clamp(2px,.8vw,5px);color:var(--cream);margin-bottom:4px;
-  text-transform:uppercase;opacity:.65;
+  letter-spacing:clamp(2px,.8vw,5px);color:#111;margin-bottom:4px;
+  text-transform:uppercase;opacity:.7;
 }
 .fch-amp{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(48px,13vw,68px);color:var(--peach);
+  font-size:clamp(48px,13vw,68px);color:#111;
   display:block;margin:8px 0 6px;line-height:1;
 }
 .fch-honor{
   margin-top:28px;font-family:'Cormorant Garamond',serif;
   font-size:clamp(16px,4.2vw,20px);font-weight:500;font-style:italic;
-  color:var(--cream);line-height:1.6;letter-spacing:.3px;opacity:.75;
+  color:#111;line-height:1.6;letter-spacing:.3px;opacity:.8;
 }
 .fch-date{
   margin-top:14px;font-family:'Cormorant Garamond',serif;
   font-size:clamp(22px,6vw,30px);font-weight:700;
-  color:var(--peach);letter-spacing:clamp(4px,1.5vw,8px);
+  color:#111;letter-spacing:clamp(4px,1.5vw,8px);
 }
 
 /* ── COUNTDOWN ────────────────────────────────────────── */
@@ -298,9 +402,34 @@ section{padding:64px 22px}
 }
 
 /* ── LOCATION ─────────────────────────────────────────── */
-#location{background:#fff;position:relative;overflow:hidden;padding:64px 22px;}
-.loc-block{text-align:center;margin-bottom:56px;}
-.loc-block:last-child{margin-bottom:0}
+#location{
+  position:relative;overflow:hidden;padding:80px 22px;
+  background-color:#e8f3f8;
+  background-image:url('fondo-location.jpeg');
+  background-position:center center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+#location::before,#location::after{
+  content:'';position:absolute;left:0;right:0;z-index:2;pointer-events:none;
+}
+#location::before{top:0;height:100px;background:linear-gradient(to bottom,#fff 0%,transparent 100%);}
+#location::after{bottom:0;height:100px;background:linear-gradient(to top,#fff 0%,transparent 100%);}
+.loc-wrap{
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(0,140,180,.14);
+  box-shadow:0 4px 28px rgba(0,0,0,.07);
+  position:relative;z-index:3;
+}
+.loc-block{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding:32px 22px;
+  text-align:center;margin-bottom:0;
+}
+.loc-block:not(:last-child){
+  border-bottom:1px solid rgba(0,140,180,.12);
+}
 .loc-icon{margin:0 auto 6px;}
 .loc-icon svg{width:56px;height:56px;}
 .loc-title{
@@ -339,33 +468,60 @@ section{padding:64px 22px}
 .cal-sub{font-size:17px;color:var(--cream);opacity:.75;line-height:1.7;margin:14px 0 28px;font-weight:500;}
 
 /* ── ITINERARY ────────────────────────────────────────── */
-#itinerary{background:#fff;overflow:hidden;padding:64px 22px;}
+#itinerary{
+  position:relative;overflow:hidden;padding:72px 20px;
+  background-color:#f7f5f2;
+}
+.it-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  opacity:.22;z-index:0;
+}
+#itinerary::before,#itinerary::after{content:'';position:absolute;left:0;right:0;z-index:2;pointer-events:none;}
+#itinerary::before{top:0;height:90px;background:linear-gradient(to bottom,#f7f5f2 0%,transparent 100%);}
+#itinerary::after{bottom:0;height:90px;background:linear-gradient(to top,#f7f5f2 0%,transparent 100%);}
+.it-inner{position:relative;z-index:3;}
 .it-title{
-  font-family:'Great Vibes',cursive;font-size:clamp(40px,10vw,52px);
-  color:var(--cream);text-align:center;margin-bottom:36px;line-height:1.1;
+  font-family:'Cormorant Garamond',serif;font-size:clamp(28px,7vw,42px);font-weight:400;
+  letter-spacing:10px;text-transform:uppercase;
+  color:#1a1a1a;text-align:center;margin-bottom:52px;
 }
-.it-line{position:relative;display:flex;flex-direction:column;align-items:center;}
-.it-line::before{
-  content:'';position:absolute;top:0;bottom:0;left:50%;
-  width:2px;background:rgba(0,140,180,.2);transform:translateX(-50%);
+.it-timeline{
+  max-width:330px;margin:0 auto;
+  position:relative;
 }
-.it-step{position:relative;width:100%;display:flex;align-items:center;min-height:90px;}
-.it-left,.it-right{flex:1;padding:8px 0;}
-.it-left{text-align:right;padding-right:40px;}
-.it-right{text-align:left;padding-left:40px;}
-.it-circle{
-  width:54px;height:54px;border-radius:50%;flex-shrink:0;
-  background:rgba(0,140,180,.1);border:1px solid rgba(0,140,180,.22);
-  display:flex;align-items:center;justify-content:center;position:relative;z-index:2;
+.it-timeline::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;
+  width:1px;background:#1a1a1a;transform:translateX(-50%);
 }
-.it-circle svg{width:28px;height:28px;}
-.it-left,.it-right{position:relative;}
-.it-left::after{content:'';position:absolute;right:-8px;top:50%;width:28px;height:1px;background:rgba(0,140,180,.25);transform:translateY(-50%);}
-.it-left::before{content:'';position:absolute;right:-10px;top:50%;width:5px;height:5px;border-radius:50%;background:rgba(0,140,180,.35);transform:translate(0,-50%);z-index:1;}
-.it-right::before{content:'';position:absolute;left:-8px;top:50%;width:28px;height:1px;background:rgba(0,140,180,.25);transform:translateY(-50%);}
-.it-right::after{content:'';position:absolute;left:-10px;top:50%;width:5px;height:5px;border-radius:50%;background:rgba(0,140,180,.35);transform:translate(0,-50%);z-index:1;}
-.it-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;font-weight:700;color:var(--cream);line-height:1.3;}
-.it-time{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;font-weight:600;color:rgba(0,90,120,.75);}
+.it-step{
+  display:grid;grid-template-columns:1fr 20px 1fr;
+  align-items:center;min-height:88px;
+  position:relative;
+}
+.it-dot{
+  width:7px;height:7px;background:#1a1a1a;border-radius:50%;
+  margin:0 auto;position:relative;z-index:1;
+  box-shadow:0 0 0 3px #f7f5f2;
+}
+.it-ico{
+  display:flex;justify-content:flex-end;align-items:center;
+  padding-right:18px;
+}
+.it-ico svg{
+  width:62px;height:62px;
+  stroke:#1a1a1a;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;fill:none;
+  overflow:visible;
+}
+.it-text{ padding-left:18px; }
+.it-label{
+  font-family:'Lato',sans-serif;font-size:8px;letter-spacing:4px;
+  text-transform:uppercase;color:#555;display:block;margin-bottom:3px;
+}
+.it-time{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5.5vw,28px);font-weight:700;
+  color:#1a1a1a;line-height:1;display:block;
+}
 
 /* ── DRESSCODE ────────────────────────────────────────── */
 #dresscode{background:#007a9e;overflow:hidden;padding:64px 22px;}
@@ -408,32 +564,130 @@ section{padding:64px 22px}
 .alb-hint{text-align:center;font-size:15px;color:var(--cream);opacity:.55;line-height:1.75;margin-top:22px;font-weight:500;}
 
 /* ── FAMILY ───────────────────────────────────────────── */
-#family{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#f0f8fc 100%);}
-#family::before,#family::after{content:'';position:absolute;left:0;right:0;z-index:1;pointer-events:none;}
-#family::before{top:0;height:60px;background:linear-gradient(to bottom,#fff 0%,transparent 100%);}
-#family::after{bottom:0;height:60px;background:linear-gradient(to top,#f0f8fc 0%,transparent 100%);}
-#family > *:not(.fam-bg){position:relative;z-index:2;}
-.fam-card{
-  text-align:center;border:1px solid rgba(0,140,180,.2);border-radius:14px;
-  padding:24px 28px;background:rgba(255,255,255,.92);max-width:360px;margin:0 auto;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  transition:transform .45s cubic-bezier(.34,1.56,.64,1),border-color .3s;
+/* ── FAMILY ───────────────────────────────────────────── */
+#family{
+  position:relative;overflow:hidden;
+  background:#faf8f4;
+  padding:64px 24px 72px;
+  text-align:center;
 }
-.fam-card:hover{transform:translateY(-4px);border-color:rgba(0,140,180,.3)}
-.fam-ttl{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--peach);text-align:center;margin:0 0 10px;}
-.fam-nms{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream);line-height:1.55;font-weight:600;margin:0;display:flex;flex-direction:column;align-items:center;}
-.fam-sep{display:block;font-family:'Great Vibes',cursive;font-size:26px;color:var(--peach);line-height:1;margin:4px 0;}
-.fam-list{list-style:none;font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream);line-height:1.75;font-weight:600;text-align:center;}
-.sdiv{height:32px}
-.fam-padgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:360px;margin:0 auto;}
-.fam-padcard{
-  background:rgba(255,255,255,.9);border:1px solid rgba(0,140,180,.18);border-radius:12px;
-  padding:14px 12px;text-align:center;backdrop-filter:blur(4px);
-  transition:transform .3s var(--spring);
+#family::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:url('fondo-family.webp') center/cover no-repeat;
+  opacity:.28;
+  pointer-events:none;
 }
-.fam-padcard:hover{transform:translateY(-2px)}
-.fam-padtype{font-family:'Lato',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--peach);font-weight:700;margin-bottom:8px;display:block;}
-.fam-padnames{font-family:'Cormorant Garamond',serif;font-size:13.5px;color:var(--cream);line-height:1.55;font-weight:600;}
+#family::after{
+  content:'';position:absolute;left:0;right:0;z-index:1;pointer-events:none;
+  top:0;bottom:0;
+  background:
+    linear-gradient(to bottom,#faf8f4 0%,transparent 90px),
+    linear-gradient(to top,#faf8f4 0%,transparent 90px);
+}
+#family > *{position:relative;z-index:2;}
+
+/* Encabezado bendición */
+.fam-blessing{margin-bottom:36px;}
+.fam-blessing-cross{
+  width:52px;height:52px;margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;
+}
+.fam-blessing-cross svg{width:52px;height:52px;}
+.fam-blessing-txt{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(18px,4.5vw,22px);
+  font-weight:700;letter-spacing:1px;
+  color:#1a1a1a;line-height:1.45;
+  text-transform:uppercase;
+}
+.fam-blessing-txt em{font-style:normal;font-family:'Great Vibes',cursive;font-size:1.35em;text-transform:none;font-weight:400;color:var(--peach);}
+
+/* Divisor ornamental */
+.fam-orn{
+  display:flex;align-items:center;gap:10px;
+  max-width:200px;margin:0 auto 28px;
+  color:#c8b89a;font-size:11px;letter-spacing:3px;
+}
+.fam-orn::before,.fam-orn::after{content:'';flex:1;height:1px;background:#c8b89a;}
+
+/* Padres */
+.fam-parents{
+  display:flex;flex-direction:column;gap:20px;
+  max-width:320px;margin:0 auto 36px;
+}
+.fam-parent-card{text-align:center;padding:0;}
+.fam-parent-role{
+  font-family:'Lato',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;
+  color:#888;display:block;margin-bottom:8px;
+}
+.fam-parent-names{
+  font-family:'Cormorant Garamond',serif;font-size:17px;
+  font-style:italic;color:#1a1a1a;line-height:1.6;font-weight:500;margin:0;
+}
+.fam-parent-amp{
+  display:block;font-family:'Great Vibes',cursive;
+  font-size:26px;color:var(--peach);line-height:1;margin:2px 0;
+}
+
+/* Padrinos título grande */
+.fam-pad-header{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(22px,5.5vw,30px);
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:#1a1a1a;margin:0 0 36px;
+}
+
+/* Padrinos — lista centrada con icono grande */
+.sdiv{height:24px}
+.fam-pad-list{
+  display:flex;flex-direction:column;gap:0;
+  max-width:320px;margin:0 auto;
+}
+.fam-pad-item{
+  text-align:center;padding:24px 8px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+.fam-pad-item:last-child{border-bottom:none;}
+.fam-pad-ico-lg{
+  width:68px;height:68px;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.fam-pad-ico-lg svg{
+  width:68px;height:68px;
+  stroke:#1a1a1a;stroke-width:.9;stroke-linecap:round;stroke-linejoin:round;fill:none;
+  overflow:visible;
+}
+.fam-pad-role{
+  font-family:'Lato',sans-serif;font-size:7.5px;font-weight:700;
+  letter-spacing:4.5px;text-transform:uppercase;
+  color:#888;display:block;margin-bottom:6px;
+}
+.fam-pad-names{
+  font-family:'Cormorant Garamond',serif;font-size:16px;
+  font-style:italic;color:#1a1a1a;line-height:1.55;font-weight:500;margin:0;
+}
+.fam-pad-amp{
+  font-family:'Great Vibes',cursive;font-size:22px;
+  color:var(--peach);display:block;line-height:1.2;
+}
+
+/* Damas / Caballeros */
+.fam-ttl{
+  font-family:'Lato',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;
+  color:#888;text-align:center;margin:0 0 12px;
+}
+.fam-honor-card{
+  text-align:center;max-width:280px;margin:0 auto;padding:0;
+  background:none;border:none;
+}
+.fam-list{
+  list-style:none;
+  font-family:'Cormorant Garamond',serif;font-size:17px;
+  font-style:italic;color:#1a1a1a;line-height:1.9;font-weight:500;
+  padding:0;margin:0;
+}
 
 /* ── RSVP ─────────────────────────────────────────────── */
 #rsvp{background:var(--ink)}
@@ -467,10 +721,22 @@ section{padding:64px 22px}
 .rsvp-submit-btn{max-width:100%;margin:18px auto 0;display:flex;justify-content:center;gap:8px}
 
 /* ── FOOTER ───────────────────────────────────────────── */
-#footer{padding:0;text-align:center;position:relative;overflow:hidden;}
-.ft-roses{position:relative;width:100%;pointer-events:none;z-index:0;overflow:hidden;max-height:38vw;margin-bottom:-10px;}
-.ft-roses img{width:100%;height:auto;display:block;-webkit-mask-image:linear-gradient(to bottom, black 40%, transparent 100%);mask-image:linear-gradient(to bottom, black 40%, transparent 100%);}
-.ft-body{padding:0 28px 52px;position:relative;z-index:2;}
+#footer{padding:0;text-align:center;position:relative;overflow:hidden;min-height:320px;}
+.ft-roses{
+  position:absolute;inset:0;z-index:0;
+  pointer-events:none;
+}
+.ft-roses img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+  filter:brightness(.72) saturate(.9);
+}
+.ft-roses::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(255,255,255,.18) 0%,rgba(240,248,252,.55) 100%);
+}
+.ft-body{padding:72px 28px 56px;position:relative;z-index:2;}
 .ft-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,5.5vw,28px);font-weight:600;font-style:italic;color:#1a3a4a;line-height:1.5;margin-bottom:12px;}
 .ft-nofaltes{font-family:'Great Vibes',cursive;font-size:clamp(48px,13vw,68px);font-weight:400;color:#1a1a1a;line-height:1.1;margin-bottom:14px;}
 .ft-date{font-family:'Le Major','Bodoni Moda',serif;font-size:clamp(16px,4.5vw,20px);font-weight:400;letter-spacing:4px;text-transform:uppercase;color:#008cb4;margin-bottom:32px;}
@@ -527,7 +793,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 /* ── REDUCED MOTION ───────────────────────────────────── */
 @media(prefers-reduced-motion:reduce){
-  .lbl,.wind-orn,.gline::after,.loc-block,.fam-card,.music-btn{animation:none!important;transition:none!important;}
+  .lbl,.wind-orn,.gline::after,.loc-block,.fam-card,.vinyl-btn{animation:none!important;transition:none!important;}
 }
   </style>
 </head>
@@ -536,7 +802,17 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <!-- LOADER (SOBRE) -->
 <div id="loader">
   <img class="sobre-img" src="sobre.png" alt="Sobre de invitación Alejandro y Mayreli">
-  <button class="sobre-btn" id="sobreBtn" aria-label="Abrir invitación">Toca para abrir</button>
+  <button class="sobre-btn" id="sobreBtn" aria-label="Abrir invitación">
+    <div class="sobre-ring">
+      <div class="sobre-circle">
+        <svg viewBox="0 0 30 30" fill="none" stroke="rgba(255,255,255,.92)" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="8" width="24" height="16" rx="2"/>
+          <path d="M3 8l12 10L27 8"/>
+        </svg>
+      </div>
+    </div>
+    <span class="sobre-lbl">Toca para abrir</span>
+  </button>
   <video class="sobre-video" id="sobreVideo" muted playsinline preload="auto">
     <source src="sobre-video.mp4" type="video/mp4">
   </video>
@@ -549,25 +825,24 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MUSIC BTN -->
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Música">
-  <svg class="vinyl" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="27" cy="27" r="27" fill="#111"/>
-    <circle cx="27" cy="27" r="24.5" stroke="#2a2a2a" stroke-width=".7"/>
-    <circle cx="27" cy="27" r="22.5" stroke="#1e1e1e" stroke-width=".6"/>
-    <circle cx="27" cy="27" r="20.5" stroke="#2a2a2a" stroke-width=".6"/>
-    <circle cx="27" cy="27" r="18.5" stroke="#1e1e1e" stroke-width=".6"/>
-    <circle cx="27" cy="27" r="16.5" stroke="#2a2a2a" stroke-width=".5"/>
-    <circle cx="27" cy="27" r="14.5" stroke="#1e1e1e" stroke-width=".5"/>
-    <circle cx="27" cy="27" r="12.5" stroke="#252525" stroke-width=".5"/>
-    <circle cx="27" cy="27" r="10" fill="#006a8a"/>
-    <circle cx="27" cy="27" r="9.2" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".5"/>
-    <text x="27" y="24.5" text-anchor="middle" font-family="serif" font-size="3.2" font-weight="600" fill="rgba(255,255,255,.8)" letter-spacing=".6">ALEJ.</text>
-    <text x="27" y="28" text-anchor="middle" font-family="serif" font-size="2.4" fill="rgba(255,255,255,.5)" letter-spacing=".4">&amp;</text>
-    <text x="27" y="31.5" text-anchor="middle" font-family="serif" font-size="3.2" font-weight="600" fill="rgba(255,255,255,.8)" letter-spacing=".6">MAYR.</text>
-    <circle cx="27" cy="27" r="1.8" fill="#111"/>
-    <ellipse cx="19" cy="14" rx="6" ry="3" fill="rgba(255,255,255,.04)" transform="rotate(-30 19 14)"/>
-  </svg>
+<!-- MUSIC BTN (vinyl + tonearm) -->
+<button class="vinyl-btn" id="vinyl-btn" type="button" aria-label="Reproducir música">
+  <div class="vinyl-tonearm">
+    <div class="vinyl-tonearm-pivot"></div>
+    <div class="vinyl-tonearm-line"></div>
+    <div class="vinyl-tonearm-head"></div>
+  </div>
+  <div class="vinyl-spin">
+    <div class="vinyl-disc">
+      <div class="vinyl-sheen"></div>
+      <div class="vinyl-label-text">A&amp;M<small>2026</small></div>
+      <div class="vinyl-hole"></div>
+    </div>
+  </div>
+  <div class="vinyl-icons">
+    <svg class="vinyl-icon-play" viewBox="0 0 24 24" fill="#e3f4f9" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="vinyl-icon-pause" viewBox="0 0 24 24" fill="#e3f4f9" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+  </div>
 </button>
 
 <!-- TOAST -->
@@ -577,8 +852,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <!-- ═══════════════ 1. HERO ════════════════════════════ -->
 <section id="hero">
   <div class="h-bg" id="heroBg">
-    <img src="https://bsjoelxktbvlavfoozhk.supabase.co/storage/v1/object/public/fotos-clientes/0a3eaeeb-4d47-4fe2-a5a1-5fc6df776680/inspiracion-1779321289277.jpeg"
-         alt="Alejandro y Mayreli" loading="eager">
+    <img src="heder.jpeg" alt="Alejandro y Mayreli" loading="eager">
   </div>
   <div class="h-ov"></div>
   <div class="h-cnt" id="hCnt">
@@ -593,6 +867,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 <!-- ═══════════════ 1.5. FECHA ══════════════════════════ -->
 <section id="fecha">
+  <img class="fch-bg" src="fondoKM.jpeg" alt="" loading="eager">
   <div class="fch-content">
     <p class="fch-intro">Nosotros...</p>
     <p class="fch-n1">Alejandro</p>
@@ -638,6 +913,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <!-- ═══════════════ 3. UBICACIONES ═══════════════════ -->
 <section id="location">
 
+  <div class="loc-wrap">
   <!-- Ceremonia Religiosa -->
   <div class="loc-block">
     <div class="loc-icon" aria-hidden="true">
@@ -680,6 +956,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
     <p class="loc-venue">Salón de eventos<br>Papantla, Veracruz</p>
     <a href="https://maps.app.goo.gl/AzYoaSEVmZbRcU7w7?g_st=ic" target="_blank" rel="noopener" class="loc-btn">Ver Ubicación</a>
   </div>
+  </div><!-- /loc-wrap -->
 
 </section>
 
@@ -694,85 +971,272 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
      target="_blank" rel="noopener" id="calBtn"
      class="btn btn-blue" style="max-width:310px;margin:0 auto;display:flex">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    Agregar a Google Calendar
+    Agregar a calendario
   </a>
 </section>
 
 
 <!-- ═══════════════ 5. ITINERARIO ════════════════════ -->
 <section id="itinerary">
+  <img src="fondo-itinerary.jpeg" class="it-bg" alt="" aria-hidden="true" loading="lazy">
+  <div class="it-inner">
   <p class="it-title">Itinerario</p>
-  <div class="it-line">
+  <div class="it-timeline">
 
+    <!-- Ceremonia -->
     <div class="it-step">
-      <div class="it-left"><span class="it-label">Ceremonia</span></div>
-      <div class="it-circle">
-        <svg viewBox="0 0 32 32" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 3v3M14.5 4.5h3"/><path d="M10 14l6-5 6 5"/><rect x="10" y="14" width="12" height="14"/><path d="M14 28v-6a2 2 0 014 0v6"/>
+      <div class="it-ico">
+        <svg viewBox="0 0 64 64">
+          <!-- Cruz con base -->
+          <line x1="32" y1="3" x2="32" y2="15"/>
+          <line x1="26" y1="8" x2="38" y2="8"/>
+          <!-- Torres laterales pequeñas -->
+          <rect x="13" y="26" width="8" height="26" rx=".5"/>
+          <rect x="43" y="26" width="8" height="26" rx=".5"/>
+          <!-- Almenas torres -->
+          <line x1="13" y1="26" x2="13" y2="22"/><line x1="16" y1="26" x2="16" y2="22"/><line x1="19" y1="26" x2="19" y2="22"/><line x1="21" y1="26" x2="21" y2="22"/>
+          <line x1="43" y1="26" x2="43" y2="22"/><line x1="46" y1="26" x2="46" y2="22"/><line x1="49" y1="26" x2="49" y2="22"/><line x1="51" y1="26" x2="51" y2="22"/>
+          <!-- Nave principal -->
+          <path d="M21 34 L32 24 L43 34"/>
+          <rect x="21" y="34" width="22" height="18" rx=".5"/>
+          <!-- Puerta arco -->
+          <path d="M27 52 L27 43 Q32 38 37 43 L37 52"/>
+          <!-- Rosetón -->
+          <circle cx="32" cy="37" r="4"/>
+          <line x1="32" y1="33" x2="32" y2="41"/>
+          <line x1="28" y1="37" x2="36" y2="37"/>
+          <line x1="29.2" y1="34.2" x2="34.8" y2="39.8"/>
+          <line x1="34.8" y1="34.2" x2="29.2" y2="39.8"/>
+          <!-- Ventanas torres -->
+          <path d="M15 32 Q17 30 19 32 L19 38 L15 38 Z"/>
+          <path d="M45 32 Q47 30 49 32 L49 38 L45 38 Z"/>
+          <!-- Campana -->
+          <path d="M29 17 Q32 13 35 17 L35 23 L29 23 Z"/>
+          <line x1="32" y1="23" x2="32" y2="26"/>
         </svg>
       </div>
-      <div class="it-right"><span class="it-time">6:00 pm</span></div>
+      <div class="it-dot"></div>
+      <div class="it-text">
+        <span class="it-label">Ceremonia</span>
+        <span class="it-time">6:00 pm</span>
+      </div>
     </div>
 
+    <!-- Recepción -->
     <div class="it-step">
-      <div class="it-left"><span class="it-time">7:30 pm</span></div>
-      <div class="it-circle">
-        <svg viewBox="0 0 32 32" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 6h16l-8 12v6"/><line x1="11" y1="24" x2="21" y2="24"/><line x1="12" y1="11" x2="20" y2="11"/>
+      <div class="it-ico">
+        <svg viewBox="0 0 64 64">
+          <!-- Mesa larga -->
+          <rect x="8" y="36" width="48" height="3" rx="1.5"/>
+          <!-- Patas mesa -->
+          <line x1="13" y1="39" x2="11" y2="54"/>
+          <line x1="51" y1="39" x2="53" y2="54"/>
+          <line x1="32" y1="39" x2="32" y2="54"/>
+          <!-- Mantel borde -->
+          <path d="M8 39 Q32 45 56 39"/>
+          <!-- Copa izquierda -->
+          <path d="M20 14 L17 28 L23 28 Z"/>
+          <line x1="20" y1="28" x2="20" y2="34"/>
+          <line x1="16" y1="34" x2="24" y2="34"/>
+          <!-- Pie copa izq -->
+          <ellipse cx="20" cy="34.5" rx="4" ry="1"/>
+          <!-- Copa derecha -->
+          <path d="M44 14 L41 28 L47 28 Z"/>
+          <line x1="44" y1="28" x2="44" y2="34"/>
+          <ellipse cx="44" cy="34.5" rx="4" ry="1"/>
+          <!-- Burbuja champán -->
+          <path d="M20 20 Q22 14 20 14"/>
+          <path d="M44 20 Q46 14 44 14"/>
+          <!-- Brindis — choque copas -->
+          <line x1="23" y1="16" x2="41" y2="16"/>
+          <!-- Efervescencia -->
+          <circle cx="19" cy="19" r=".8"/><circle cx="21" cy="16" r=".6"/>
+          <circle cx="43" cy="19" r=".8"/><circle cx="45" cy="16" r=".6"/>
+          <!-- Flores mesa -->
+          <circle cx="32" cy="30" r="3"/>
+          <path d="M29 30 Q32 24 35 30"/>
+          <path d="M32 27 Q38 28 35 32"/>
+          <path d="M32 27 Q26 28 29 32"/>
         </svg>
       </div>
-      <div class="it-right"><span class="it-label">Recepción</span></div>
+      <div class="it-dot"></div>
+      <div class="it-text">
+        <span class="it-label">Recepción</span>
+        <span class="it-time">7:30 pm</span>
+      </div>
     </div>
 
+    <!-- Entrada novios -->
     <div class="it-step">
-      <div class="it-left"><span class="it-label">Entrada</span></div>
-      <div class="it-circle">
-        <svg viewBox="0 0 32 32" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="7" r="2.5"/><circle cx="20" cy="8" r="2"/>
-          <path d="M12 10v7l-3 9"/><path d="M12 17l3 9"/><path d="M9 13h6"/>
-          <path d="M20 10v5l3 7"/><path d="M20 15l-2 7"/><path d="M18 12h5"/>
-          <path d="M15 13l3-1"/>
+      <div class="it-ico">
+        <svg viewBox="0 0 64 64">
+          <!-- Novio: cabeza + cuello -->
+          <circle cx="21" cy="10" r="5"/>
+          <!-- Novio: traje -->
+          <path d="M14 22 Q21 18 28 22 L30 52 L12 52 Z"/>
+          <!-- Solapa traje -->
+          <path d="M21 18 L19 26 L21 28 L23 26 L21 18"/>
+          <!-- Corbata -->
+          <path d="M20 26 L21 34 L22 26"/>
+          <!-- Brazo novio -->
+          <path d="M14 28 Q10 32 12 38"/>
+          <path d="M28 28 Q36 32 34 38"/>
+          <!-- Novia: cabeza -->
+          <circle cx="43" cy="10" r="5"/>
+          <!-- Velo -->
+          <path d="M38 10 Q36 18 38 28 Q40 32 43 30" stroke-dasharray="2.5 1.5"/>
+          <path d="M48 10 Q50 16 49 24" stroke-dasharray="2 1.5"/>
+          <!-- Novia: vestido -->
+          <path d="M36 22 Q43 18 50 22 L54 52 L32 52 Z"/>
+          <!-- Falda vuelo -->
+          <path d="M32 42 Q43 48 54 42"/>
+          <path d="M33 48 Q43 55 53 48"/>
+          <!-- Cuello vestido -->
+          <path d="M39 20 Q43 25 47 20"/>
+          <!-- Manos enlazadas -->
+          <path d="M28 36 Q31 32 34 36"/>
+          <!-- Corazon arriba -->
+          <path d="M30 6 Q32 3 34 6 Q36 3 38 6 Q38 10 32 14 Q26 10 26 6 Q28 3 30 6" opacity=".4"/>
         </svg>
       </div>
-      <div class="it-right"><span class="it-time">8:00 pm</span></div>
+      <div class="it-dot"></div>
+      <div class="it-text">
+        <span class="it-label">Entrada</span>
+        <span class="it-time">8:00 pm</span>
+      </div>
     </div>
 
+    <!-- Vals -->
     <div class="it-step">
-      <div class="it-left"><span class="it-time">8:20 pm</span></div>
-      <div class="it-circle">
-        <svg viewBox="0 0 32 32" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="2.5"/><circle cx="21" cy="9" r="2"/>
-          <path d="M12 11 Q14 16 10 21"/><path d="M12 11 Q16 16 14 22"/>
-          <path d="M21 11 Q25 16 23 21"/><path d="M21 11 Q17 15 19 22"/>
-          <path d="M13 15 Q17 13 20 14"/>
+      <div class="it-ico">
+        <svg viewBox="0 0 64 64">
+          <!-- Novio bailando: cabeza -->
+          <circle cx="23" cy="9" r="4.5"/>
+          <!-- Novia bailando: cabeza -->
+          <circle cx="41" cy="9" r="4.5"/>
+          <!-- Novia: velo flotando -->
+          <path d="M37 9 Q33 6 30 10 Q28 14 30 18" stroke-dasharray="2 1.5"/>
+          <!-- Cuerpos en giro -->
+          <path d="M19 13 Q16 24 18 34 Q20 40 22 46"/>
+          <path d="M27 13 Q30 20 29 30"/>
+          <path d="M35 13 Q34 20 35 30"/>
+          <path d="M45 13 Q48 24 46 34 Q44 40 42 46"/>
+          <!-- Brazos levantados -->
+          <path d="M19 20 Q14 16 12 10"/>
+          <path d="M45 20 Q50 16 52 10"/>
+          <!-- Brazos enlazados centro -->
+          <path d="M27 22 Q32 17 37 22"/>
+          <!-- Falda novia girando -->
+          <path d="M35 30 Q42 35 48 30 Q52 44 46 50 Q40 54 36 50 Q32 54 36 30"/>
+          <!-- Vuelo falda -->
+          <path d="M35 40 Q42 46 48 40"/>
+          <!-- Traje novio -->
+          <path d="M18 34 Q22 36 26 34 L24 52 L16 52 Z"/>
+          <!-- Nota musical -->
+          <path d="M54 18 Q58 16 58 20 Q58 24 54 24" opacity=".35"/>
+          <line x1="58" y1="16" x2="58" y2="26" opacity=".35"/>
+          <path d="M8 24 Q12 22 12 26 Q12 30 8 30" opacity=".35"/>
+          <line x1="12" y1="22" x2="12" y2="32" opacity=".35"/>
         </svg>
       </div>
-      <div class="it-right"><span class="it-label">Vals</span></div>
+      <div class="it-dot"></div>
+      <div class="it-text">
+        <span class="it-label">Vals</span>
+        <span class="it-time">8:20 pm</span>
+      </div>
     </div>
 
+    <!-- Cena -->
     <div class="it-step">
-      <div class="it-left"><span class="it-label">Cena</span></div>
-      <div class="it-circle">
-        <svg viewBox="0 0 32 32" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="16" cy="16" r="9"/><circle cx="16" cy="16" r="6" stroke-dasharray="2 2" opacity=".5"/>
-          <path d="M7 7l4 4M25 7l-4 4"/><line x1="7" y1="7" x2="7" y2="10"/><line x1="25" y1="7" x2="25" y2="10"/>
+      <div class="it-ico">
+        <svg viewBox="0 0 64 64">
+          <!-- Plato grande -->
+          <circle cx="32" cy="36" r="20"/>
+          <!-- Aro interior -->
+          <circle cx="32" cy="36" r="14"/>
+          <!-- Domo cloche -->
+          <path d="M12 32 Q32 16 52 32"/>
+          <line x1="12" y1="32" x2="52" y2="32"/>
+          <circle cx="32" cy="32" r="2.5"/>
+          <!-- Tenedor -->
+          <line x1="16" y1="8" x2="16" y2="22"/>
+          <line x1="13" y1="8" x2="13" y2="16"/>
+          <line x1="16" y1="8" x2="16" y2="16"/>
+          <line x1="19" y1="8" x2="19" y2="16"/>
+          <line x1="13" y1="16" x2="19" y2="16"/>
+          <line x1="16" y1="22" x2="16" y2="36"/>
+          <!-- Cuchillo -->
+          <path d="M48 8 Q52 12 50 22 L48 58"/>
+          <line x1="48" y1="8" x2="48" y2="22"/>
+          <!-- Cuchara -->
+          <ellipse cx="32" cy="10" rx="3" ry="5"/>
+          <line x1="32" y1="15" x2="32" y2="30"/>
+          <!-- Vapor comida -->
+          <path d="M26 24 Q27 20 26 18" opacity=".4"/>
+          <path d="M32 24 Q33 20 32 18" opacity=".4"/>
+          <path d="M38 24 Q39 20 38 18" opacity=".4"/>
         </svg>
       </div>
-      <div class="it-right"><span class="it-time">9:00 pm</span></div>
+      <div class="it-dot"></div>
+      <div class="it-text">
+        <span class="it-label">Cena</span>
+        <span class="it-time">9:00 pm</span>
+      </div>
     </div>
 
+    <!-- A Bailar -->
     <div class="it-step">
-      <div class="it-left"><span class="it-time">10:00 pm</span></div>
-      <div class="it-circle">
-        <svg viewBox="0 0 32 32" fill="none" stroke="var(--cream)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="13" y1="8" x2="13" y2="22"/><line x1="22" y1="6" x2="22" y2="20"/>
-          <path d="M13 8l9-2"/>
-          <ellipse cx="10" cy="23" rx="3" ry="2.5" fill="var(--cream)" opacity=".7"/>
-          <ellipse cx="19" cy="21" rx="3" ry="2.5" fill="var(--cream)" opacity=".7"/>
+      <div class="it-ico">
+        <svg viewBox="0 0 64 64">
+          <!-- Cadena colgante -->
+          <line x1="32" y1="2" x2="32" y2="10"/>
+          <circle cx="32" cy="10" r="1.5"/>
+          <!-- Bola disco -->
+          <circle cx="32" cy="26" r="16"/>
+          <!-- Latitud lines -->
+          <path d="M16.5 20 Q32 24 47.5 20"/>
+          <path d="M14.5 26 Q32 30 49.5 26"/>
+          <path d="M16.5 32 Q32 28 47.5 32"/>
+          <!-- Longitud lines -->
+          <line x1="32" y1="10" x2="32" y2="42"/>
+          <path d="M24 11 Q20 26 24 41"/>
+          <path d="M40 11 Q44 26 40 41"/>
+          <path d="M19 14 Q12 26 19 38"/>
+          <path d="M45 14 Q52 26 45 38"/>
+          <!-- Mosaicos espejo (pequeños cuadritos) -->
+          <rect x="28" y="13" width="3" height="2.5" rx=".3" opacity=".5"/>
+          <rect x="33" y="13" width="3" height="2.5" rx=".3" opacity=".5"/>
+          <rect x="25" y="16" width="3" height="2.5" rx=".3" opacity=".5"/>
+          <rect x="36" y="16" width="3" height="2.5" rx=".3" opacity=".5"/>
+          <rect x="23" y="22" width="3" height="2.5" rx=".3" opacity=".5"/>
+          <rect x="38" y="22" width="3" height="2.5" rx=".3" opacity=".5"/>
+          <!-- Destellos de luz -->
+          <line x1="52" y1="14" x2="57" y2="9"/>
+          <line x1="54" y1="17" x2="60" y2="17"/>
+          <line x1="52" y1="20" x2="57" y2="23"/>
+          <line x1="10" y1="14" x2="5" y2="9"/>
+          <line x1="8" y1="17" x2="2" y2="17"/>
+          <line x1="10" y1="22" x2="5" y2="26"/>
+          <!-- Pista de baile -->
+          <rect x="14" y="46" width="36" height="6" rx="1"/>
+          <line x1="23" y1="46" x2="23" y2="52"/>
+          <line x1="32" y1="46" x2="32" y2="52"/>
+          <line x1="41" y1="46" x2="41" y2="52"/>
+          <line x1="14" y1="49" x2="50" y2="49"/>
+          <!-- Figuras bailando -->
+          <circle cx="22" cy="40" r="2.5"/>
+          <circle cx="42" cy="40" r="2.5"/>
         </svg>
       </div>
-      <div class="it-right"><span class="it-label">¡A Bailar!</span></div>
+      <div class="it-dot"></div>
+      <div class="it-text">
+        <span class="it-label">¡A Bailar!</span>
+        <span class="it-time">10:00 pm</span>
+      </div>
     </div>
+
+  </div>
+  </div>
 
   </div>
 </section>
@@ -836,14 +1300,12 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <span class="lbl">Captura cada momento</span>
   <h2 class="ttl">Álbum Compartido</h2>
   <div class="gline"></div>
-  <p class="alb-sub">Escanea el código QR y sube las fotos<br>que tomes durante nuestra boda.</p>
 
   <div class="alb-qr-wrap">
     <div class="alb-qr-frame">
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&color=004d66&bgcolor=f0f8fb&data=https%3A%2F%2Fphotos.app.goo.gl%2Falejandro-mayreli-boda-2026"
            alt="QR álbum compartido Alejandro y Mayreli" class="alb-qr" loading="lazy">
     </div>
-    <p class="alb-scan">Escanea con la cámara</p>
   </div>
 
   <a href="https://photos.app.goo.gl/alejandro-mayreli-boda-2026" target="_blank" rel="noopener" class="btn alb-btn">
@@ -857,64 +1319,279 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 <!-- ═══════════════ 9. FAMILIA ════════════════════════ -->
 <section id="family">
-  <span class="lbl">Con amor de</span>
-  <h2 class="ttl">Familia</h2>
-  <div class="gline"></div>
 
-  <p class="fam-ttl">Padres del Novio</p>
-  <div class="fam-card">
-    <p class="fam-nms">
-      <span>Carlos Alejandro López Romero</span>
-      <span class="fam-sep">&amp;</span>
-      <span>Patricia Sosa Blanco</span>
-    </p>
+  <!-- Bendición -->
+  <div class="fam-blessing">
+    <div class="fam-blessing-cross">
+      <svg viewBox="0 0 52 52" fill="none" stroke="#1a1a1a" stroke-width="1.1" stroke-linecap="round">
+        <!-- Cruz ornamental -->
+        <line x1="26" y1="6" x2="26" y2="46"/>
+        <line x1="10" y1="18" x2="42" y2="18"/>
+        <!-- Flores en extremos -->
+        <circle cx="26" cy="6" r="2.5"/>
+        <circle cx="10" cy="18" r="2.5"/>
+        <circle cx="42" cy="18" r="2.5"/>
+        <circle cx="26" cy="46" r="2.5"/>
+        <!-- Halo -->
+        <circle cx="26" cy="26" r="22" stroke-dasharray="2.5 3.5" opacity=".25"/>
+        <!-- Pequeños pétalos en extremos de la cruz -->
+        <path d="M26 3 Q24 6 26 9 Q28 6 26 3" opacity=".5"/>
+        <path d="M7 18 Q10 16 13 18 Q10 20 7 18" opacity=".5"/>
+        <path d="M39 18 Q42 16 45 18 Q42 20 39 18" opacity=".5"/>
+        <path d="M26 43 Q24 46 26 49 Q28 46 26 43" opacity=".5"/>
+      </svg>
+    </div>
+    <p class="fam-blessing-txt">Con la bendición de Dios<br><em>&amp;</em> Nuestros Padres</p>
   </div>
 
-  <div class="sdiv"></div>
+  <div class="fam-orn">✦</div>
 
-  <p class="fam-ttl">Padres de la Novia</p>
-  <div class="fam-card">
-    <p class="fam-nms">
-      <span>Noé Santiago Cortés</span>
-      <span class="fam-sep">&amp;</span>
-      <span>Míriam Acosta Benavides</span>
-    </p>
-  </div>
-
-  <div class="sdiv"></div>
-
-  <p class="fam-ttl" style="margin-bottom:14px">Padrinos</p>
-  <div class="fam-padgrid">
-    <div class="fam-padcard">
-      <span class="fam-padtype">Velación</span>
-      <p class="fam-padnames">Raymundo Pulido Cruz<br>&amp;<br>Sofía Jiménez Juárez</p>
+  <!-- Padres -->
+  <div class="fam-parents">
+    <div class="fam-parent-card">
+      <span class="fam-parent-role">Padres de la Novia</span>
+      <p class="fam-parent-names">
+        <span>Noé Santiago Cortés</span>
+        <span class="fam-parent-amp">&amp;</span>
+        <span>Míriam Acosta Benavides</span>
+      </p>
     </div>
-    <div class="fam-padcard">
-      <span class="fam-padtype">Anillos</span>
-      <p class="fam-padnames">Martín Demetrio Molina Fernández<br>&amp;<br>María de la Paz Santiago Cortés</p>
-    </div>
-    <div class="fam-padcard">
-      <span class="fam-padtype">Lazo</span>
-      <p class="fam-padnames">Noé Miguel Pérez Rodríguez<br>&amp;<br>Andrea Esmeralda López Sosa</p>
-    </div>
-    <div class="fam-padcard">
-      <span class="fam-padtype">Arras</span>
-      <p class="fam-padnames">Edgar Daniel Jiménez Ortigoza<br>&amp;<br>Margarita Sosa Blanco</p>
-    </div>
-    <div class="fam-padcard">
-      <span class="fam-padtype">Biblia y Rosario</span>
-      <p class="fam-padnames">Andrés Sosa Blanco<br>&amp;<br>Erika Gladiola Espinoza Rosado</p>
-    </div>
-    <div class="fam-padcard">
-      <span class="fam-padtype">Cristo</span>
-      <p class="fam-padnames">Arturo Hernández Hernández<br>&amp;<br>Celeste Liliana López Romero</p>
+    <div class="fam-parent-card">
+      <span class="fam-parent-role">Padres del Novio</span>
+      <p class="fam-parent-names">
+        <span>Carlos Alejandro López Romero</span>
+        <span class="fam-parent-amp">&amp;</span>
+        <span>Patricia Sosa Blanco</span>
+      </p>
     </div>
   </div>
 
-  <div class="sdiv"></div>
+  <div class="fam-orn">✦</div>
 
-  <p class="fam-ttl">Damas de Honor</p>
-  <div class="fam-card">
+  <!-- Padrinos -->
+  <p class="fam-pad-header">Nuestros Padrinos</p>
+
+  <div class="fam-pad-list">
+
+    <!-- Anillos -->
+    <div class="fam-pad-item">
+      <div class="fam-pad-ico-lg">
+        <svg viewBox="0 0 68 68">
+          <!-- Anillo izquierdo -->
+          <circle cx="26" cy="38" r="14"/>
+          <circle cx="26" cy="38" r="9"/>
+          <!-- Diamante anillo izq -->
+          <path d="M22 32 L26 28 L30 32 L26 42 Z"/>
+          <line x1="22" y1="32" x2="30" y2="32"/>
+          <!-- Brillo -->
+          <line x1="20" y1="26" x2="18" y2="23"/><line x1="18" y1="27" x2="15" y2="27"/>
+          <!-- Anillo derecho -->
+          <circle cx="42" cy="38" r="14"/>
+          <circle cx="42" cy="38" r="9"/>
+          <!-- Grabado anillo der -->
+          <path d="M38 34 Q42 30 46 34 Q42 38 38 34"/>
+          <!-- Zona de intersección destacada -->
+          <path d="M34 32 Q38 38 34 44" stroke-dasharray="2 2" opacity=".4"/>
+          <path d="M34 32 Q30 38 34 44" stroke-dasharray="2 2" opacity=".4"/>
+        </svg>
+      </div>
+      <span class="fam-pad-role">Anillos</span>
+      <p class="fam-pad-names">
+        Martín Demetrio Molina Fernández
+        <span class="fam-pad-amp">&amp;</span>
+        María de la Paz Santiago Cortés
+      </p>
+    </div>
+
+    <!-- Lazo -->
+    <div class="fam-pad-item">
+      <div class="fam-pad-ico-lg">
+        <svg viewBox="0 0 68 68">
+          <!-- Lazo de bodas — forma de 8 / infinito con nudo -->
+          <!-- Lazo izquierdo -->
+          <path d="M10 34 Q10 16 24 16 Q34 16 34 34 Q34 16 44 16 Q58 16 58 34 Q58 52 44 52 Q34 52 34 34 Q34 52 24 52 Q10 52 10 34"/>
+          <!-- Nudo central -->
+          <ellipse cx="34" cy="34" rx="5" ry="8"/>
+          <!-- Cintas colgantes -->
+          <path d="M31 42 Q28 52 24 58"/>
+          <path d="M37 42 Q40 52 44 58"/>
+          <!-- Detalle cintas -->
+          <path d="M24 55 Q22 58 24 61"/>
+          <path d="M44 55 Q46 58 44 61"/>
+          <!-- Florcita nudo -->
+          <circle cx="34" cy="34" r="2.5"/>
+          <circle cx="34" cy="29" r="1.5" opacity=".4"/>
+          <circle cx="34" cy="39" r="1.5" opacity=".4"/>
+          <circle cx="29" cy="34" r="1.5" opacity=".4"/>
+          <circle cx="39" cy="34" r="1.5" opacity=".4"/>
+        </svg>
+      </div>
+      <span class="fam-pad-role">Lazo</span>
+      <p class="fam-pad-names">
+        Noé Miguel Pérez Rodríguez
+        <span class="fam-pad-amp">&amp;</span>
+        Andrea Esmeralda López Sosa
+      </p>
+    </div>
+
+    <!-- Velación -->
+    <div class="fam-pad-item">
+      <div class="fam-pad-ico-lg">
+        <svg viewBox="0 0 68 68">
+          <!-- Vela izquierda -->
+          <rect x="18" y="30" width="10" height="28" rx="1.5"/>
+          <!-- Mecha y llama izquierda -->
+          <line x1="23" y1="24" x2="23" y2="30"/>
+          <path d="M23 14 Q19 19 19 23 Q19 28 23 28 Q27 28 27 23 Q27 19 23 14"/>
+          <path d="M23 18 Q21 21 21 23 Q21 26 23 26" opacity=".35"/>
+          <!-- Cera derramada izq -->
+          <path d="M18 58 Q23 61 28 58"/>
+          <!-- Vela derecha -->
+          <rect x="40" y="30" width="10" height="28" rx="1.5"/>
+          <!-- Mecha y llama derecha -->
+          <line x1="45" y1="24" x2="45" y2="30"/>
+          <path d="M45 14 Q41 19 41 23 Q41 28 45 28 Q49 28 49 23 Q49 19 45 14"/>
+          <path d="M45 18 Q43 21 43 23 Q43 26 45 26" opacity=".35"/>
+          <!-- Cera derramada der -->
+          <path d="M40 58 Q45 61 50 58"/>
+          <!-- Destellos llama -->
+          <line x1="20" y1="14" x2="18" y2="11" opacity=".4"/>
+          <line x1="26" y1="15" x2="28" y2="12" opacity=".4"/>
+          <line x1="42" y1="14" x2="40" y2="11" opacity=".4"/>
+          <line x1="48" y1="15" x2="50" y2="12" opacity=".4"/>
+          <!-- Cruz entre velas -->
+          <line x1="30" y1="34" x2="38" y2="34" opacity=".3"/>
+          <line x1="34" y1="30" x2="34" y2="38" opacity=".3"/>
+        </svg>
+      </div>
+      <span class="fam-pad-role">Velación</span>
+      <p class="fam-pad-names">
+        Raymundo Pulido Cruz
+        <span class="fam-pad-amp">&amp;</span>
+        Sofía Jiménez Juárez
+      </p>
+    </div>
+
+    <!-- Arras -->
+    <div class="fam-pad-item">
+      <div class="fam-pad-ico-lg">
+        <svg viewBox="0 0 68 68">
+          <!-- Cofre / caja de arras -->
+          <rect x="14" y="36" width="40" height="24" rx="3"/>
+          <path d="M14 44 Q34 48 54 44"/>
+          <!-- Tapa del cofre -->
+          <path d="M14 36 Q14 24 34 24 Q54 24 54 36"/>
+          <!-- Bisagra -->
+          <circle cx="34" cy="36" r="2.5"/>
+          <!-- Monedas cayendo -->
+          <circle cx="27" cy="20" r="5"/>
+          <line x1="27" y1="14" x2="27" y2="16"/>
+          <path d="M23 17 Q27 15 31 17"/>
+          <!-- Cruz en moneda -->
+          <line x1="27" y1="17" x2="27" y2="23"/><line x1="24" y1="20" x2="30" y2="20"/>
+          <!-- Moneda 2 -->
+          <circle cx="41" cy="18" r="4"/>
+          <line x1="38" y1="15" x2="44" y2="21"/>
+          <!-- Moneda 3 pequeña -->
+          <circle cx="35" cy="30" r="3" opacity=".6"/>
+          <!-- Brillo cofre -->
+          <path d="M18 40 Q20 38 22 40" opacity=".5"/>
+          <!-- Candado -->
+          <rect x="30" y="44" width="8" height="6" rx="1"/>
+          <path d="M31 44 Q31 40 34 40 Q37 40 37 44"/>
+        </svg>
+      </div>
+      <span class="fam-pad-role">Arras</span>
+      <p class="fam-pad-names">
+        Edgar Daniel Jiménez Ortigoza
+        <span class="fam-pad-amp">&amp;</span>
+        Margarita Sosa Blanco
+      </p>
+    </div>
+
+    <!-- Biblia y Rosario -->
+    <div class="fam-pad-item">
+      <div class="fam-pad-ico-lg">
+        <svg viewBox="0 0 68 68">
+          <!-- Biblia abierta -->
+          <path d="M8 16 Q8 12 12 12 L34 14 L56 12 Q60 12 60 16 L60 52 Q60 56 56 56 L34 54 L12 56 Q8 56 8 52 Z"/>
+          <!-- Lomo central -->
+          <line x1="34" y1="14" x2="34" y2="54"/>
+          <!-- Páginas izquierdas -->
+          <line x1="14" y1="22" x2="30" y2="22"/>
+          <line x1="14" y1="27" x2="30" y2="27"/>
+          <line x1="14" y1="32" x2="30" y2="32"/>
+          <line x1="14" y1="37" x2="28" y2="37"/>
+          <!-- Páginas derechas -->
+          <line x1="38" y1="22" x2="54" y2="22"/>
+          <line x1="38" y1="27" x2="54" y2="27"/>
+          <line x1="38" y1="32" x2="54" y2="32"/>
+          <line x1="40" y1="37" x2="54" y2="37"/>
+          <!-- Cruz página izq -->
+          <line x1="22" y1="44" x2="22" y2="50"/><line x1="19" y1="47" x2="25" y2="47"/>
+          <!-- Rosario página der -->
+          <circle cx="46" cy="44" r="3"/>
+          <circle cx="46" cy="50" r="2" opacity=".5"/>
+          <circle cx="40" cy="47" r="2" opacity=".5"/>
+          <circle cx="52" cy="47" r="2" opacity=".5"/>
+          <path d="M43 41 Q46 38 49 41" opacity=".5"/>
+          <!-- Marcapáginas -->
+          <line x1="34" y1="54" x2="34" y2="62"/>
+          <path d="M30 62 L34 58 L38 62"/>
+        </svg>
+      </div>
+      <span class="fam-pad-role">Biblia y Rosario</span>
+      <p class="fam-pad-names">
+        Andrés Sosa Blanco
+        <span class="fam-pad-amp">&amp;</span>
+        Erika Gladiola Espinoza Rosado
+      </p>
+    </div>
+
+    <!-- Cristo -->
+    <div class="fam-pad-item">
+      <div class="fam-pad-ico-lg">
+        <svg viewBox="0 0 68 68">
+          <!-- Cruz principal -->
+          <line x1="34" y1="8" x2="34" y2="60"/>
+          <line x1="16" y1="22" x2="52" y2="22"/>
+          <!-- Adornos en extremos cruz -->
+          <path d="M34 8 Q31 12 34 16 Q37 12 34 8"/>
+          <path d="M16 22 Q20 19 24 22 Q20 25 16 22"/>
+          <path d="M44 22 Q48 19 52 22 Q48 25 44 22"/>
+          <path d="M34 56 Q31 60 34 64 Q37 60 34 56" opacity=".6"/>
+          <!-- Halo -->
+          <circle cx="34" cy="18" r="8" stroke-dasharray="3 3" opacity=".35"/>
+          <!-- Figura Cristo -->
+          <ellipse cx="34" cy="15" rx="4" ry="4.5"/>
+          <!-- Brazos figura -->
+          <path d="M22 28 Q28 24 34 26 Q40 24 46 28"/>
+          <!-- Cuerpo figura -->
+          <line x1="34" y1="26" x2="34" y2="44"/>
+          <!-- Piernas -->
+          <path d="M34 44 Q30 50 28 56"/><path d="M34 44 Q38 50 40 56"/>
+          <!-- Rayos halo -->
+          <line x1="34" y1="8" x2="34" y2="6"/><line x1="40" y1="10" x2="42" y2="8"/>
+          <line x1="44" y1="15" x2="46" y2="14"/><line x1="24" y1="10" x2="22" y2="8"/>
+          <line x1="20" y1="15" x2="18" y2="14"/>
+        </svg>
+      </div>
+      <span class="fam-pad-role">Cristo</span>
+      <p class="fam-pad-names">
+        Arturo Hernández Hernández
+        <span class="fam-pad-amp">&amp;</span>
+        Celeste Liliana López Romero
+      </p>
+    </div>
+
+  </div>
+
+  <div class="sdiv"></div>
+  <div class="fam-orn">✦</div>
+
+  <!-- Damas de Honor -->
+  <p class="fam-ttl" style="margin-top:8px">Damas de Honor</p>
+  <div class="fam-honor-card">
     <ul class="fam-list">
       <li>Yamileth Acosta</li>
       <li>Samantha Maryed Sosa</li>
@@ -924,9 +1601,11 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   </div>
 
   <div class="sdiv"></div>
+  <div class="fam-orn">✦</div>
 
-  <p class="fam-ttl">Caballeros</p>
-  <div class="fam-card">
+  <!-- Caballeros -->
+  <p class="fam-ttl" style="margin-top:8px">Caballeros</p>
+  <div class="fam-honor-card">
     <ul class="fam-list">
       <li>Adán López</li>
       <li>Daniel Sosa</li>
@@ -935,6 +1614,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
       <li>Allan Vázquez</li>
     </ul>
   </div>
+
 </section>
 
 
@@ -955,7 +1635,6 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
     <p class="rsvp-names-hint" id="rsvpNamesHint">Escribe los nombres de quienes asistirán</p>
     <div class="rsvp-names-wrap" id="rsvpNamesWrap"></div>
     <button type="button" onclick="sendRSVP()" class="btn btn-blue rsvp-submit-btn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 12a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1.27h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
       Confirmar asistencia
     </button>
   </div>
@@ -971,46 +1650,6 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
     <p class="ft-msg">Te esperamos con mucho cariño...</p>
     <p class="ft-nofaltes">¡No Faltes!</p>
     <p class="ft-date">25 de Julio de 2026</p>
-    <svg class="ft-rings" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <linearGradient id="goldBand" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#e8d48b"/><stop offset="25%" stop-color="#c9a96e"/>
-          <stop offset="50%" stop-color="#f0dda0"/><stop offset="75%" stop-color="#b8944e"/>
-          <stop offset="100%" stop-color="#d4b678"/>
-        </linearGradient>
-        <linearGradient id="goldInner" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#a07830"/><stop offset="50%" stop-color="#c9a050"/>
-          <stop offset="100%" stop-color="#8a6828"/>
-        </linearGradient>
-        <linearGradient id="diamTop2" x1="0.5" y1="0" x2="0.5" y2="1">
-          <stop offset="0%" stop-color="#e0f4fc"/><stop offset="100%" stop-color="#8ad4f0"/>
-        </linearGradient>
-        <linearGradient id="diamLeft2" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#a0d8f0"/><stop offset="100%" stop-color="#5ab8e0"/>
-        </linearGradient>
-        <linearGradient id="diamRight2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#c0e8fa"/><stop offset="100%" stop-color="#7ac8ec"/>
-        </linearGradient>
-        <linearGradient id="diamBottom2" x1="0.5" y1="0" x2="0.5" y2="1">
-          <stop offset="0%" stop-color="#8ad4f0"/><stop offset="100%" stop-color="#3090c0"/>
-        </linearGradient>
-      </defs>
-      <circle cx="42" cy="58" r="22" fill="url(#goldBand)" stroke="url(#goldInner)" stroke-width="1.5"/>
-      <circle cx="42" cy="58" r="16" fill="none" stroke="url(#goldInner)" stroke-width="1"/>
-      <circle cx="78" cy="58" r="22" fill="url(#goldBand)" stroke="url(#goldInner)" stroke-width="1.5"/>
-      <circle cx="78" cy="58" r="16" fill="none" stroke="url(#goldInner)" stroke-width="1"/>
-      <g transform="translate(66,32)">
-        <path d="M54.5 24 L52 18" stroke="#c9a96e" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M42 24 Q48 28 54 24" stroke="#c9a96e" stroke-width="1.5" fill="none"/>
-        <polygon points="48,4 40,14 48,12 56,14" fill="url(#diamTop2)"/>
-        <polygon points="40,14 48,12 44,18" fill="url(#diamLeft2)" opacity=".85"/>
-        <polygon points="56,14 48,12 52,18" fill="url(#diamRight2)" opacity=".85"/>
-        <polygon points="40,14 56,14 48,22" fill="url(#diamBottom2)" opacity=".75"/>
-        <polygon points="44,10 52,10 50,13 46,13" fill="#e0f4fc" opacity=".6"/>
-        <circle cx="45" cy="9" r=".8" fill="#fff" opacity=".8"/>
-        <circle cx="51" cy="12" r=".5" fill="#fff" opacity=".6"/>
-      </g>
-    </svg>
     <div class="el-sep"></div>
     <a href="https://www.instagram.com/elysium.invitaciones/" target="_blank" rel="noopener" class="el-credit">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -1044,8 +1683,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollAnims();
     countdown();
     setInterval(countdown, 1000);
-    const aud2 = document.getElementById('bgMusic');
-    if (aud2) { aud2.play().then(() => { document.getElementById('musicBtn')?.classList.add('on'); }).catch(()=>{}); }
+    showVinyl(); startMusic();
   }
 
   sobreBtn.addEventListener('click', () => {
@@ -1191,22 +1829,22 @@ function countdown(){
   }
 }
 
-/* ── MUSIC ───────────────────────────────────────────── */
+/* ── MUSIC (vinyl) ────────────────────────────────────── */
 const aud  = document.getElementById('bgMusic');
-const mBtn = document.getElementById('musicBtn');
-let playing = false;
+const vBtn = document.getElementById('vinyl-btn');
+function showVinyl(){ vBtn && vBtn.classList.add('is-ready'); }
 function startMusic(){
-  if(playing) return;
-  aud.play().then(()=>{ playing=true; mBtn.classList.add('on'); }).catch(()=>{});
+  if(!aud) return;
+  aud.play().then(()=>{ vBtn && vBtn.classList.add('is-playing'); }).catch(()=>{});
 }
-function toggleMusic(){
-  if(playing){ aud.pause(); mBtn.classList.remove('on'); playing=false; } else { startMusic(); }
+if(vBtn){
+  vBtn.addEventListener('click',()=>{
+    if(!aud) return;
+    if(aud.paused){ aud.play().catch(()=>{}); vBtn.classList.add('is-playing'); }
+    else { aud.pause(); vBtn.classList.remove('is-playing'); }
+  });
 }
-aud.play().then(()=>{ playing=true; mBtn.classList.add('on'); }).catch(()=>{
-  const fn=()=>startMusic();
-  document.addEventListener('touchstart',fn,{once:true,passive:true});
-  document.addEventListener('click',fn,{once:true});
-});
+aud && aud.addEventListener('ended',()=>{ aud.currentTime=0; aud.play().catch(()=>{}); });
 
 /* ── RSVP — ?pases=N ─────────────────────────────────── */
 /* Actualizar WA cuando el cliente confirme el número.    */
