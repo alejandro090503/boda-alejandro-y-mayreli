@@ -326,7 +326,7 @@ section{padding:64px 22px}
 /* ── FECHA ────────────────────────────────────────────── */
 #fecha{
   position:relative;overflow:hidden;padding:0;min-height:85vh;
-  display:flex;align-items:center;justify-content:flex-end;
+  display:flex;align-items:center;justify-content:center;
   background:#e3f4f9;
 }
 .fch-bg{
@@ -338,49 +338,46 @@ section{padding:64px 22px}
 #fecha::before{top:0;height:90px;background:linear-gradient(to bottom,#fff 0%,transparent 100%);}
 #fecha::after{bottom:0;height:90px;background:linear-gradient(to top,#fff 0%,transparent 100%);}
 .fch-content{
-  position:relative;z-index:2;padding:72px 22px 64px 16px;text-align:left;width:62%;
-}
-.fch-headline{
-  font-family:'Great Vibes',cursive;
-  font-size:clamp(40px,11vw,58px);
-  color:#111;margin-bottom:14px;line-height:1;
-  letter-spacing:.5px;
+  position:relative;z-index:2;
+  padding:80px 28px;
+  text-align:center;
+  width:100%;max-width:420px;
+  display:flex;flex-direction:column;align-items:center;
 }
 .fch-n1{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(22px,5.5vw,30px);font-weight:700;
-  color:#111;line-height:1.15;
-  letter-spacing:clamp(3px,1vw,6px);text-transform:uppercase;
-}
-.fch-full{
-  font-family:'Lato',sans-serif;font-size:clamp(12px,3vw,14px);font-weight:700;
-  letter-spacing:clamp(2px,.8vw,5px);color:#111;margin-bottom:4px;
-  text-transform:uppercase;opacity:.7;
+  font-size:clamp(28px,7.5vw,40px);font-weight:700;
+  color:#111;line-height:1.1;
+  letter-spacing:clamp(4px,1.4vw,8px);text-transform:uppercase;
+  margin:0;
 }
 .fch-amp{
   font-family:'Great Vibes',cursive;
-  font-size:clamp(48px,13vw,68px);color:#111;
-  display:block;margin:8px 0 6px;line-height:1;
+  font-size:clamp(48px,13vw,70px);color:#111;
+  display:block;margin:6px 0;line-height:1;
+}
+.fch-rule{
+  width:64px;height:1px;
+  background:rgba(0,0,0,.35);
+  margin:26px auto;
 }
 .fch-honor{
-  margin-top:28px;font-family:'Cormorant Garamond',serif;
-  font-size:clamp(16px,4.2vw,20px);font-weight:500;font-style:italic;
-  color:#111;line-height:1.6;letter-spacing:.3px;opacity:.8;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(15px,4vw,18px);font-weight:500;font-style:italic;
+  color:#111;line-height:1.65;letter-spacing:.3px;opacity:.85;
+  max-width:360px;margin:0 auto;
 }
 .fch-date{
-  margin-top:14px;font-family:'Cormorant Garamond',serif;
-  font-size:clamp(22px,6vw,30px);font-weight:700;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(24px,6.5vw,32px);font-weight:700;
   color:#111;letter-spacing:clamp(4px,1.5vw,8px);
+  margin:0;
 }
 
 /* ── COUNTDOWN ────────────────────────────────────────── */
 #countdown{
   position:relative;overflow:hidden;padding:0;
-  background:
-    radial-gradient(ellipse 80% 55% at 12% 25%, rgba(0,160,210,.15) 0%, transparent 52%),
-    radial-gradient(ellipse 60% 70% at 88% 78%, rgba(0,140,190,.12) 0%, transparent 48%),
-    radial-gradient(ellipse 100% 50% at 50% 100%, rgba(0,120,170,.2) 0%, transparent 50%),
-    linear-gradient(170deg, #005f80 0%, #007a9e 30%, #006d90 65%, #005a78 100%);
+  background:#587593;
   -webkit-mask-image:linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
   mask-image:linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
 }
@@ -544,10 +541,19 @@ section{padding:64px 22px}
 
 /* ── DRESSCODE ────────────────────────────────────────── */
 #dresscode{background:#4a6680;overflow:hidden;padding:64px 22px;}
-.dc-title{font-family:'Lato',sans-serif;font-size:clamp(20px,5vw,26px);letter-spacing:6px;font-weight:700;text-transform:uppercase;color:#fff;text-align:center;margin-bottom:28px;line-height:1.1;}
-.dc-outfits{display:flex;align-items:flex-end;justify-content:center;gap:18px;margin:0 auto 28px;max-width:340px;}
-.dc-outfit{display:flex;flex-direction:column;align-items:center;}
-.dc-outfit svg{height:200px;width:auto;}
+.dc-title{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(48px,12vw,68px);
+  letter-spacing:1px;font-weight:400;
+  color:#fff;text-align:center;
+  margin-bottom:20px;line-height:1;
+  text-shadow:0 2px 16px rgba(0,0,0,.18);
+}
+.dc-couple{
+  display:block;margin:0 auto 24px;
+  width:min(86%,320px);height:auto;
+  filter:drop-shadow(0 8px 24px rgba(0,0,0,.22));
+}
 .dc-type-txt{
   font-family:'Cormorant Garamond',serif;font-size:clamp(22px,6vw,30px);font-weight:600;
   letter-spacing:6px;text-transform:uppercase;color:#fff;text-align:center;margin-bottom:24px;
@@ -913,11 +919,12 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <section id="fecha">
   <img class="fch-bg" src="fondoKM.jpeg" alt="" loading="eager">
   <div class="fch-content">
-    <p class="fch-headline">¡Nos casamos!</p>
     <p class="fch-n1">Alejandro</p>
     <p class="fch-amp">y</p>
     <p class="fch-n1">Mayreli</p>
-    <p class="fch-honor">Con la bendición de Dios,<br>que escribió nuestra historia desde el inicio y después de 7 años y 9 meses de un amor que ha crecido contra todo, hoy decidimos unir nuestras vidas para siempre.</p>
+    <div class="fch-rule"></div>
+    <p class="fch-honor">Con la bendición de Dios, que escribió nuestra historia desde el inicio y después de 7 años y 9 meses de un amor que ha crecido contra todo, hoy decidimos unir nuestras vidas para siempre.</p>
+    <div class="fch-rule"></div>
     <p class="fch-date">25.07.26</p>
   </div>
 </section>
@@ -1202,71 +1209,7 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <!-- ═══════════════ 6. DRESS CODE ════════════════════ -->
 <section id="dresscode">
   <p class="dc-title">Formal</p>
-
-  <div class="dc-outfits">
-    <!-- Hombre: traje oscuro con brazo levantado señalando -->
-    <div class="dc-outfit">
-      <svg viewBox="0 0 100 220" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Cabeza -->
-        <ellipse cx="52" cy="22" rx="11" ry="13" fill="#d9b896" stroke="none"/>
-        <!-- Cabello -->
-        <path d="M41 18 Q45 8 55 9 Q64 10 63 22 L60 16 Q55 14 50 17 Q46 19 41 18" fill="#1a1a1a" stroke="none"/>
-        <!-- Cuello camisa -->
-        <path d="M46 34 L46 42 L58 42 L58 34" fill="#fff" stroke="none"/>
-        <!-- Traje saco -->
-        <path d="M38 40 L34 56 L28 70 L26 110 L34 120 L34 220 L48 220 L50 130 L52 220 L66 220 L66 120 L74 110 L72 70 L66 56 L62 40 L52 46 Z" fill="#1f2d3d" stroke="#0d1620" stroke-width="1.2"/>
-        <!-- Solapas -->
-        <path d="M38 40 L46 50 L50 70 L46 60 Z" fill="#0d1620" stroke="none"/>
-        <path d="M62 40 L54 50 L50 70 L54 60 Z" fill="#0d1620" stroke="none"/>
-        <!-- Corbata -->
-        <path d="M48 42 L50 44 L52 42 L54 60 L50 78 L46 60 Z" fill="#a83838" stroke="none"/>
-        <!-- Brazo izquierdo levantado señalando -->
-        <path d="M38 56 L20 30 L14 18 L18 14 L24 26 L42 50 Z" fill="#1f2d3d" stroke="#0d1620" stroke-width="1.2"/>
-        <!-- Mano señalando -->
-        <ellipse cx="14" cy="14" rx="4" ry="5" fill="#d9b896" stroke="none"/>
-        <path d="M11 9 L14 4" stroke="#d9b896" stroke-width="2.5"/>
-        <!-- Brazo derecho a un lado -->
-        <path d="M66 56 L74 90 L70 120 L62 90 Z" fill="#1f2d3d" stroke="#0d1620" stroke-width="1.2"/>
-        <!-- Mano derecha -->
-        <ellipse cx="72" cy="120" rx="4" ry="5" fill="#d9b896" stroke="none"/>
-        <!-- Zapatos -->
-        <ellipse cx="40" cy="218" rx="9" ry="4" fill="#0a0a0a" stroke="none"/>
-        <ellipse cx="60" cy="218" rx="9" ry="4" fill="#0a0a0a" stroke="none"/>
-      </svg>
-    </div>
-    <!-- Mujer: vestido largo elegante color sage/verde -->
-    <div class="dc-outfit">
-      <svg viewBox="0 0 100 220" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Cabeza -->
-        <ellipse cx="50" cy="22" rx="10" ry="12" fill="#e8c4a0" stroke="none"/>
-        <!-- Cabello largo -->
-        <path d="M40 18 Q35 8 50 6 Q65 8 62 22 L65 32 L62 38 L58 30 L60 22 Q55 20 50 22 Q45 20 40 26 L42 38 L38 32 L40 18" fill="#3a2418" stroke="none"/>
-        <!-- Cabello detrás (hombros) -->
-        <path d="M38 32 L36 50 L40 56 L44 46 Z" fill="#3a2418" stroke="none"/>
-        <path d="M62 32 L64 50 L60 56 L56 46 Z" fill="#3a2418" stroke="none"/>
-        <!-- Cuello -->
-        <rect x="46" y="32" width="8" height="6" fill="#e8c4a0" stroke="none"/>
-        <!-- Vestido — escote en V parte superior -->
-        <path d="M36 40 L46 42 L50 52 L54 42 L64 40 L66 70 L62 76 L38 76 L34 70 Z" fill="#6b8a76" stroke="#3d5a48" stroke-width="1"/>
-        <!-- Cintura -->
-        <path d="M38 76 L62 76 L60 92 L40 92 Z" fill="#6b8a76" stroke="#3d5a48" stroke-width="1"/>
-        <!-- Falda larga acampanada con abertura -->
-        <path d="M40 92 L60 92 L72 218 L52 218 L50 130 L48 218 L28 218 Z" fill="#6b8a76" stroke="#3d5a48" stroke-width="1"/>
-        <!-- Abertura central de la falda -->
-        <path d="M50 92 L50 218" stroke="#3d5a48" stroke-width=".6" opacity=".6"/>
-        <!-- Brazos -->
-        <path d="M36 40 L26 80 L28 110 L34 80 Z" fill="#e8c4a0" stroke="#a87850" stroke-width=".6"/>
-        <path d="M64 40 L74 80 L72 110 L66 80 Z" fill="#e8c4a0" stroke="#a87850" stroke-width=".6"/>
-        <!-- Manos -->
-        <ellipse cx="28" cy="112" rx="3.5" ry="4.5" fill="#e8c4a0" stroke="none"/>
-        <ellipse cx="72" cy="112" rx="3.5" ry="4.5" fill="#e8c4a0" stroke="none"/>
-        <!-- Tacones -->
-        <path d="M30 218 L36 215 L34 220 Z" fill="#3a2418" stroke="none"/>
-        <path d="M70 218 L64 215 L66 220 Z" fill="#3a2418" stroke="none"/>
-      </svg>
-    </div>
-  </div>
-
+  <img class="dc-couple" src="dresscode-couple.png" alt="Código de vestimenta formal" loading="lazy">
   <p class="dc-msg">Reservaremos el color blanco<br>para la novia.</p>
 </section>
 
@@ -1539,10 +1482,6 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
   <div class="gline"></div>
 
   <p class="rsvp-date-big">25 de Julio de 2026</p>
-  <p class="rsvp-sub">
-    Confirma antes del<br>
-    <span class="rsvp-dl">26 de Junio de 2026</span>
-  </p>
 
   <div class="rsvp-form-wrap">
     <div class="rsvp-pases-badge" id="rsvpPasesBadge"></div>
@@ -1740,9 +1679,9 @@ function scrollAnims() {
   });
   ScrollTrigger.create({ trigger:'#dresscode', start:'top 78%', once:true,
     onEnter(){
-      gsap.from('.dc-outfits', { opacity:0, y:24, duration:.7, ease });
-      gsap.from('.dc-type-txt', { opacity:0, y:16, duration:.6, delay:.25, ease });
-      gsap.from('.dc-msg', { opacity:0, y:14, duration:.55, stagger:.15, delay:.4, ease });
+      gsap.from('.dc-title', { opacity:0, y:18, duration:.7, ease });
+      gsap.from('.dc-couple', { opacity:0, y:24, duration:.8, delay:.2, ease });
+      gsap.from('.dc-msg', { opacity:0, y:14, duration:.55, delay:.45, ease });
     }
   });
   gsap.from('.gifts-wrap', { opacity:0, y:18, duration:.6, ease, scrollTrigger:{ trigger:'#gifts', start:'top 82%', once:true } });
